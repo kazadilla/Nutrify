@@ -23,6 +23,9 @@ namespace Nutrify.Data
             builder.ApplyConfiguration(new FoodSeed());
             builder.ApplyConfiguration(new MealSeed());
             builder.ApplyConfiguration(new NutrientSeed());
+            builder.ApplyConfiguration(new RoleSeed());
+            builder.ApplyConfiguration(new UserSeed());
+            builder.ApplyConfiguration(new UserRoleSeed());
         }
     }
 }
