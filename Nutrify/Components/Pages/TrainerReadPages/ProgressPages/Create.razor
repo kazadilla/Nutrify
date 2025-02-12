@@ -15,7 +15,7 @@
         <EditForm method="post" Model="Progress" OnValidSubmit="AddProgress" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="date" class="form-label">Date:</label> 
                 <InputDate id="date" @bind-Value="Progress.Date" class="form-control" /> 
                 <ValidationMessage For="() => Progress.Date" class="text-danger" /> 
@@ -30,7 +30,7 @@
                 <InputNumber id="points" @bind-Value="Progress.Points" class="form-control" /> 
                 <ValidationMessage For="() => Progress.Points" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="dailylogid" class="form-label">DailyLogId:</label> 
                 <InputNumber id="dailylogid" @bind-Value="Progress.DailyLogId" class="form-control" /> 
                 <ValidationMessage For="() => Progress.DailyLogId" class="text-danger" /> 

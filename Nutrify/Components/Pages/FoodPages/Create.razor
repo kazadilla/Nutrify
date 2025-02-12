@@ -26,14 +26,22 @@
                 <ValidationMessage For="() => Food.Category" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="servingsize" class="form-label">ServingSize:</label> 
+                <label for="servingsize" class="form-label">Serving Size:</label> 
                 <InputNumber id="servingsize" @bind-Value="Food.ServingSize" class="form-control" /> 
                 <ValidationMessage For="() => Food.ServingSize" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
-                <label for="nutrientid" class="form-label">NutrientId:</label> 
-                <InputNumber id="nutrientid" @bind-Value="Food.NutrientId" class="form-control" /> 
-                <ValidationMessage For="() => Food.NutrientId" class="text-danger" /> 
+            <div class="mb-3" >
+                <label for="nutrientid" class="form-label">Nutrient:</label> 
+                <InputSelect id="nutrientid" @bind-Value="Food.NutrientId" class="form-control">
+                    <option value="">-- Select Nutrient --</option>
+                    @if (Nutrients != null)
+                    {
+                        foreach (var nutrient in Nutrients)
+                        {
+                            <option value="@nutrient.Id">@nutrient.Name</option>
+                        }
+                    }
+                </InputSelect>
             </div>        
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
@@ -56,4 +64,16 @@
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/foods");
     }
+
+    //Declare and initialize CarRentalManagementContext and IList
+    private NutrifyContext context = default!;
+    private IList<Nutrient> Nutrients;
+    
+    //OnInitialized method to get all Makes, Models and Colours
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+        Nutrients = context.Nutrient.ToList();
+    }
+
 }

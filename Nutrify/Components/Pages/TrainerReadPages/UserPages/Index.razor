@@ -21,9 +21,11 @@
     <PropertyColumn Property="user => user.Gender" />
 
     <TemplateColumn Context="user">
-        <a href="@($"users/edit?id={user.Id}")">Edit</a> |
-        <a href="@($"users/details?id={user.Id}")">Details</a> |
-        <a href="@($"users/delete?id={user.Id}")">Delete</a>
+        <a href="@($"users/details?id={user.Id}")">Details</a>
+        <AuthorizeView Roles="User">
+            | <a href="@($"users/edit?id={user.Id}")">Edit</a> |
+            <a href="@($"users/delete?id={user.Id}")">Delete</a>
+        </AuthorizeView>
     </TemplateColumn>
 </QuickGrid>
 

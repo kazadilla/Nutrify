@@ -16,21 +16,21 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
             <div class="mb-3">
-                <label for="goaltype" class="form-label">GoalType:</label> 
+                <label for="goaltype" class="form-label">Goal Type:</label> 
                 <InputText id="goaltype" @bind-Value="Goal.GoalType" class="form-control" /> 
                 <ValidationMessage For="() => Goal.GoalType" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="targetdate" class="form-label">TargetDate:</label> 
+                <label for="targetdate" class="form-label">Target Date:</label> 
                 <InputDate id="targetdate" @bind-Value="Goal.TargetDate" class="form-control" /> 
                 <ValidationMessage For="() => Goal.TargetDate" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="targetcalories" class="form-label">TargetCalories:</label> 
+                <label for="targetcalories" class="form-label">Target Calories:</label> 
                 <InputNumber id="targetcalories" @bind-Value="Goal.TargetCalories" class="form-control" /> 
                 <ValidationMessage For="() => Goal.TargetCalories" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="userid" class="form-label">UserId:</label> 
                 <InputNumber id="userid" @bind-Value="Goal.UserId" class="form-control" /> 
                 <ValidationMessage For="() => Goal.UserId" class="text-danger" /> 

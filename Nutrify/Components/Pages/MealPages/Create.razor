@@ -16,7 +16,7 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
             <div class="mb-3">
-                <label for="mealtype" class="form-label">MealType:</label> 
+                <label for="mealtype" class="form-label">Meal Type:</label> 
                 <InputText id="mealtype" @bind-Value="Meal.MealType" class="form-control" /> 
                 <ValidationMessage For="() => Meal.MealType" class="text-danger" /> 
             </div>        
@@ -25,7 +25,7 @@
                 <InputDate id="date" @bind-Value="Meal.Date" class="form-control" /> 
                 <ValidationMessage For="() => Meal.Date" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="foodid" class="form-label">FoodId:</label> 
                 <InputNumber id="foodid" @bind-Value="Meal.FoodId" class="form-control" /> 
                 <ValidationMessage For="() => Meal.FoodId" class="text-danger" /> 

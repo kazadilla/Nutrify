@@ -21,7 +21,7 @@
                 <ValidationMessage For="() => Recipe.Name" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="servingsize" class="form-label">ServingSize:</label> 
+                <label for="servingsize" class="form-label">Serving Size:</label> 
                 <InputNumber id="servingsize" @bind-Value="Recipe.ServingSize" class="form-control" /> 
                 <ValidationMessage For="() => Recipe.ServingSize" class="text-danger" /> 
             </div>        
@@ -30,7 +30,7 @@
                 <InputText id="description" @bind-Value="Recipe.Description" class="form-control" /> 
                 <ValidationMessage For="() => Recipe.Description" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="userid" class="form-label">UserId:</label> 
                 <InputNumber id="userid" @bind-Value="Recipe.UserId" class="form-control" /> 
                 <ValidationMessage For="() => Recipe.UserId" class="text-danger" /> 

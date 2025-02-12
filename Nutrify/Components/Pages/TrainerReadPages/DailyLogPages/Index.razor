@@ -21,9 +21,11 @@
     <PropertyColumn Property="dailylog => dailylog.UserId" />
 
     <TemplateColumn Context="dailylog">
-        <a href="@($"dailylogs/edit?id={dailylog.Id}")">Edit</a> |
-        <a href="@($"dailylogs/details?id={dailylog.Id}")">Details</a> |
-        <a href="@($"dailylogs/delete?id={dailylog.Id}")">Delete</a>
+        <a href="@($"dailylogs/details?id={dailylog.Id}")">Details</a>
+        <AuthorizeView Roles = "User">
+            | <a href="@($"dailylogs/edit?id={dailylog.Id}")">Edit</a> |
+            <a href="@($"dailylogs/delete?id={dailylog.Id}")">Delete</a>
+        </AuthorizeView>
     </TemplateColumn>
 </QuickGrid>
 

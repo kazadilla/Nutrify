@@ -15,22 +15,22 @@
         <EditForm method="post" Model="DailyLog" OnValidSubmit="AddDailyLog" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="date" class="form-label">Date:</label> 
                 <InputDate id="date" @bind-Value="DailyLog.Date" class="form-control" /> 
                 <ValidationMessage For="() => DailyLog.Date" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="totalcalories" class="form-label">TotalCalories:</label> 
+                <label for="totalcalories" class="form-label">Total Calories:</label> 
                 <InputNumber id="totalcalories" @bind-Value="DailyLog.TotalCalories" class="form-control" /> 
                 <ValidationMessage For="() => DailyLog.TotalCalories" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="servingsizelogged" class="form-label">ServingSizeLogged:</label> 
+                <label for="servingsizelogged" class="form-label">Serving Size Logged:</label> 
                 <InputNumber id="servingsizelogged" @bind-Value="DailyLog.ServingSizeLogged" class="form-control" /> 
                 <ValidationMessage For="() => DailyLog.ServingSizeLogged" class="text-danger" /> 
             </div>        
-            <div class="mb-3">
+            <div class="mb-3" hidden>
                 <label for="userid" class="form-label">UserId:</label> 
                 <InputNumber id="userid" @bind-Value="DailyLog.UserId" class="form-control" /> 
                 <ValidationMessage For="() => DailyLog.UserId" class="text-danger" /> 
