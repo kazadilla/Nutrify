@@ -1,0 +1,104 @@
+﻿@page "/dailylogs/edit"
+@using Microsoft.EntityFrameworkCore
+@using Nutrify.Domain
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>DailyLog</h2>
+<hr />
+@if (DailyLog is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4">
+            <EditForm method="post" Model="DailyLog" OnValidSubmit="UpdateDailyLog" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary role="alert"/>
+                <input type="hidden" name="DailyLog.Id" value="@DailyLog.Id" />
+                <div class="mb-3">
+                    <label for="date" class="form-label">Date:</label>
+                    <InputDate id="date" @bind-Value="DailyLog.Date" class="form-control" />
+                    <ValidationMessage For="() => DailyLog.Date" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="totalcalories" class="form-label">TotalCalories:</label>
+                    <InputNumber id="totalcalories" @bind-Value="DailyLog.TotalCalories" class="form-control" />
+                    <ValidationMessage For="() => DailyLog.TotalCalories" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="servingsizelogged" class="form-label">ServingSizeLogged:</label>
+                    <InputNumber id="servingsizelogged" @bind-Value="DailyLog.ServingSizeLogged" class="form-control" />
+                    <ValidationMessage For="() => DailyLog.ServingSizeLogged" class="text-danger" />
+                </div>
+                <div class="mb-3">
+                    <label for="userid" class="form-label">UserId:</label>
+                    <InputNumber id="userid" @bind-Value="DailyLog.UserId" class="form-control" />
+                    <ValidationMessage For="() => DailyLog.UserId" class="text-danger" />
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/dailylogs">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private DailyLog? DailyLog { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        DailyLog ??= await context.DailyLog.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (DailyLog is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more information, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task UpdateDailyLog()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(DailyLog!).State = EntityState.Modified;
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!DailyLogExists(DailyLog!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/dailylogs");
+    }
+
+    private bool DailyLogExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.DailyLog.Any(e => e.Id == id);
+    }
+}

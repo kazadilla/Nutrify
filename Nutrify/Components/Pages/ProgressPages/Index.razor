@@ -1,0 +1,39 @@
+﻿@page "/progresses"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Nutrify.Domain
+@using Nutrify.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="progresses/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.Progress">
+    <PropertyColumn Property="progress => progress.Date" />
+    <PropertyColumn Property="progress => progress.Weight" />
+    <PropertyColumn Property="progress => progress.Points" />
+    <PropertyColumn Property="progress => progress.DailyLogId" />
+
+    <TemplateColumn Context="progress">
+        <a href="@($"progresses/edit?id={progress.Id}")">Edit</a> |
+        <a href="@($"progresses/details?id={progress.Id}")">Details</a> |
+        <a href="@($"progresses/delete?id={progress.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private NutrifyContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

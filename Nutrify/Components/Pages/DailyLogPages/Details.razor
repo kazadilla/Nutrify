@@ -1,0 +1,52 @@
+﻿@page "/dailylogs/details"
+@using Microsoft.EntityFrameworkCore
+@using Nutrify.Domain
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>DailyLog</h2>
+    <hr />
+    @if (dailylog is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Date</dt>
+            <dd class="col-sm-10">@dailylog.Date</dd>
+            <dt class="col-sm-2">TotalCalories</dt>
+            <dd class="col-sm-10">@dailylog.TotalCalories</dd>
+            <dt class="col-sm-2">ServingSizeLogged</dt>
+            <dd class="col-sm-10">@dailylog.ServingSizeLogged</dd>
+            <dt class="col-sm-2">UserId</dt>
+            <dd class="col-sm-10">@dailylog.UserId</dd>
+        </dl>
+        <div>
+            <a href="@($"/dailylogs/edit?id={dailylog.Id}")">Edit</a> |
+            <a href="@($"/dailylogs")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private DailyLog? dailylog;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        dailylog = await context.DailyLog.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (dailylog is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

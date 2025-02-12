@@ -1,0 +1,39 @@
+﻿@page "/dailylogs"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Nutrify.Domain
+@using Nutrify.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="dailylogs/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.DailyLog">
+    <PropertyColumn Property="dailylog => dailylog.Date" />
+    <PropertyColumn Property="dailylog => dailylog.TotalCalories" />
+    <PropertyColumn Property="dailylog => dailylog.ServingSizeLogged" />
+    <PropertyColumn Property="dailylog => dailylog.UserId" />
+
+    <TemplateColumn Context="dailylog">
+        <a href="@($"dailylogs/edit?id={dailylog.Id}")">Edit</a> |
+        <a href="@($"dailylogs/details?id={dailylog.Id}")">Details</a> |
+        <a href="@($"dailylogs/delete?id={dailylog.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private NutrifyContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

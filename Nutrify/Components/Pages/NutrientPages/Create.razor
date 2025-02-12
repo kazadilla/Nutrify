@@ -1,0 +1,49 @@
+﻿@page "/nutrients/create"
+@using Microsoft.EntityFrameworkCore
+@using Nutrify.Domain
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>Nutrient</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Nutrient" OnValidSubmit="AddNutrient" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label> 
+                <InputText id="name" @bind-Value="Nutrient.Name" class="form-control" /> 
+                <ValidationMessage For="() => Nutrient.Name" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="units" class="form-label">Units:</label> 
+                <InputNumber id="units" @bind-Value="Nutrient.Units" class="form-control" /> 
+                <ValidationMessage For="() => Nutrient.Units" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/nutrients">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Nutrient Nutrient { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddNutrient()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Nutrient.Add(Nutrient);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/nutrients");
+    }
+}

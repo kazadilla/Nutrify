@@ -1,0 +1,52 @@
+﻿@page "/progresses/details"
+@using Microsoft.EntityFrameworkCore
+@using Nutrify.Domain
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Progress</h2>
+    <hr />
+    @if (progress is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Date</dt>
+            <dd class="col-sm-10">@progress.Date</dd>
+            <dt class="col-sm-2">Weight</dt>
+            <dd class="col-sm-10">@progress.Weight</dd>
+            <dt class="col-sm-2">Points</dt>
+            <dd class="col-sm-10">@progress.Points</dd>
+            <dt class="col-sm-2">DailyLogId</dt>
+            <dd class="col-sm-10">@progress.DailyLogId</dd>
+        </dl>
+        <div>
+            <a href="@($"/progresses/edit?id={progress.Id}")">Edit</a> |
+            <a href="@($"/progresses")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Progress? progress;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        progress = await context.Progress.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (progress is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

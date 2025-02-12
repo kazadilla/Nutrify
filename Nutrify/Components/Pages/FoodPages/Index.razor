@@ -1,0 +1,39 @@
+﻿@page "/foods"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using Nutrify.Domain
+@using Nutrify.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="foods/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.Food">
+    <PropertyColumn Property="food => food.Name" />
+    <PropertyColumn Property="food => food.Category" />
+    <PropertyColumn Property="food => food.ServingSize" />
+    <PropertyColumn Property="food => food.NutrientId" />
+
+    <TemplateColumn Context="food">
+        <a href="@($"foods/edit?id={food.Id}")">Edit</a> |
+        <a href="@($"foods/details?id={food.Id}")">Details</a> |
+        <a href="@($"foods/delete?id={food.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private NutrifyContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

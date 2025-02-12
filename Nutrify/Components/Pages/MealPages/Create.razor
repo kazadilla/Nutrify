@@ -1,0 +1,54 @@
+﻿@page "/meals/create"
+@using Microsoft.EntityFrameworkCore
+@using Nutrify.Domain
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>Meal</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="Meal" OnValidSubmit="AddMeal" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="mealtype" class="form-label">MealType:</label> 
+                <InputText id="mealtype" @bind-Value="Meal.MealType" class="form-control" /> 
+                <ValidationMessage For="() => Meal.MealType" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="date" class="form-label">Date:</label> 
+                <InputDate id="date" @bind-Value="Meal.Date" class="form-control" /> 
+                <ValidationMessage For="() => Meal.Date" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="foodid" class="form-label">FoodId:</label> 
+                <InputNumber id="foodid" @bind-Value="Meal.FoodId" class="form-control" /> 
+                <ValidationMessage For="() => Meal.FoodId" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/meals">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Meal Meal { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddMeal()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Meal.Add(Meal);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/meals");
+    }
+}

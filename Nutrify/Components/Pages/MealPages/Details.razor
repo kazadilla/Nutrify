@@ -1,0 +1,50 @@
+﻿@page "/meals/details"
+@using Microsoft.EntityFrameworkCore
+@using Nutrify.Domain
+@inject IDbContextFactory<Nutrify.Data.NutrifyContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>Meal</h2>
+    <hr />
+    @if (meal is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">MealType</dt>
+            <dd class="col-sm-10">@meal.MealType</dd>
+            <dt class="col-sm-2">Date</dt>
+            <dd class="col-sm-10">@meal.Date</dd>
+            <dt class="col-sm-2">FoodId</dt>
+            <dd class="col-sm-10">@meal.FoodId</dd>
+        </dl>
+        <div>
+            <a href="@($"/meals/edit?id={meal.Id}")">Edit</a> |
+            <a href="@($"/meals")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private Meal? meal;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        meal = await context.Meal.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (meal is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
