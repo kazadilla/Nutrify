@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nutrify.Configurations.Entities;
-using Nutrify.Domain;
+using Nutrify.Data;
 
 namespace Nutrify.Data
 {
-    public class NutrifyContext : DbContext
+    public class NutrifyContext(DbContextOptions<NutrifyContext> options) : IdentityDbContext<NutrifyUser>(options)
     {
-        public NutrifyContext (DbContextOptions<NutrifyContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Nutrify.Domain.Food> Food { get; set; } = default!;
         public DbSet<Nutrify.Domain.Nutrient> Nutrient { get; set; } = default!;
         public DbSet<Nutrify.Domain.DailyLog> DailyLog { get; set; } = default!;
@@ -32,6 +24,5 @@ namespace Nutrify.Data
             builder.ApplyConfiguration(new MealSeed());
             builder.ApplyConfiguration(new NutrientSeed());
         }
-
     }
 }
